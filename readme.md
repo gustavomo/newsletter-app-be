@@ -16,4 +16,4 @@ docker-compose up
 
 ## Related Repositories
 
-- [Newsletter APP FE](<repository_url>)
+- [Newsletter APP FE](<https://github.com/gustavomo/newsletter-app-fe>)
