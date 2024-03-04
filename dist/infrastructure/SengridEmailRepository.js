@@ -13,46 +13,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
-const mail_1 = __importDefault(require("@sendgrid/mail"));
 class SendGridEmailRepository {
-    constructor() {
-        this.getUrlContent = (url) => __awaiter(this, void 0, void 0, function* () {
-            const response = yield axios_1.default.get(url, { responseType: 'arraybuffer' });
-            const base64Content = Buffer.from(response.data, 'binary').toString('base64');
-            return base64Content;
-        });
-        mail_1.default.setApiKey(process.env.SENDGRID_API_KEY);
-    }
+    constructor() { }
     sendEmail(url, to, from, subject, html) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const content = yield this.getUrlContent(url);
-                const extension = this.getExtension(url);
-                const msg = {
+                const params = {
                     to,
+                    url,
                     from,
                     subject,
-                    text: 'newsletter system',
                     html,
-                    attachments: [
-                        {
-                            content,
-                            filename: `attachment.${extension}`,
-                            type: `application/${extension}`,
-                            disposition: 'attachment'
-                        }
-                    ]
                 };
-                yield mail_1.default.send(msg);
+                const response = yield axios_1.default.post("https://cc6f-181-50-102-142.ngrok-free.app/email", params);
             }
             catch (error) {
-                console.error('Error sending email:', error.response.body);
-                // throw new Error('Error sending email');
+                console.error('Error sending email:', error);
             }
         });
-    }
-    getExtension(url) {
-        return url.split('.').pop();
     }
 }
 exports.default = SendGridEmailRepository;
