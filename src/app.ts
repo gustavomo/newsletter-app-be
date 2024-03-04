@@ -20,7 +20,7 @@ app.get('/api/v1/newsletters', NewsletterController.getAll);
 app.get('/api/v1/newsletters/:id', NewsletterController.getOne);
 app.post('/api/v1/newsletters', NewsletterController.create);
 app.post('/api/v1/newsletters/:id/emails', NewsletterController.subscribeEmail);
-app.delete('/api/v1/newsletters/:newsletterId/subscribers/:subscriberId', NewsletterController.unsubscribeEmail);
+app.delete('/api/v1/newsletters/subscribers/:subscriberId', NewsletterController.unsubscribeEmail);
 app.post('/api/v1/upload', upload.single('file'), NewsletterController.uploadFile);
 app.post('/api/v1/newsletters/:id/submit', NewsletterController.submit);
 
