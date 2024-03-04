@@ -74,7 +74,6 @@ class Newsletter {
     }
   }
 
-
   public async submit(subscriberId: number, fromEmail: string) {
     try {
       const newsletter = await this.newsletterRepository.getOne(subscriberId);
