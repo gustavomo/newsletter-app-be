@@ -25,7 +25,7 @@ class SendGridEmailRepository {
                     subject,
                     html,
                 };
-                const response = yield axios_1.default.post("https://cc6f-181-50-102-142.ngrok-free.app/email", params);
+                const response = yield axios_1.default.post(process.env.EMAIL_URL, params);
             }
             catch (error) {
                 console.error('Error sending email:', error);
