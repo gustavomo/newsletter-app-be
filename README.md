@@ -7,6 +7,8 @@
 - docker
 - docker-compose
 - FE repository
+- PORT 3000 free
+- PORT 5432 free
 
 ## Run
 
