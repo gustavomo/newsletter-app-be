@@ -82,7 +82,13 @@ class Newsletter {
       for (let i = 0; i < subscribers.length; i++) {
         const subscriber = subscribers[i];
 
-        await this.emailRepository.sendEmail(newsletter.file_url, subscriber.email, fromEmail, newsletter.subject, this.addUnlink(newsletter.content, subscriber.id));
+        await this.emailRepository.sendEmail({
+          from: fromEmail,
+          html: this.addUnlink(newsletter.content, subscriber.id),
+          subject: newsletter.subject,
+          to: subscriber.email,
+          url: newsletter.file_url,
+        });
       }
     } catch (error) {
       console.error(error);

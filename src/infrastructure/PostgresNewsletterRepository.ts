@@ -3,7 +3,7 @@ import { NewsletterRepository } from "../domain/NewsletterRespository";
 import NewsletterModel from "./models/Newsletter";
 
 export class PostgresNewsletterRepository implements NewsletterRepository {
-  async create(newsletter: NewsletterModel) {
+  public async create(newsletter: NewsletterModel) {
     await NewsletterModel.create({
       subject: newsletter.subject,
       content: newsletter.content,
@@ -11,7 +11,7 @@ export class PostgresNewsletterRepository implements NewsletterRepository {
     });
   }
 
-  async getAll() {
+  public async getAll() {
     const newsletter = await NewsletterModel.findAll({
       raw: true,
     });
@@ -19,7 +19,7 @@ export class PostgresNewsletterRepository implements NewsletterRepository {
     return newsletter!;
   }
 
-  async getOne(id: number) {
+  public async getOne(id: number) {
     const newsletter = await NewsletterModel.findOne({
       raw: true,
       where: {

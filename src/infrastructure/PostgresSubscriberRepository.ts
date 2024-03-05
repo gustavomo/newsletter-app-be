@@ -3,14 +3,14 @@ import { SubscriberRepository } from "../domain/SubscriberRepository";
 import SubscriberModel from "./models/Subscriber";
 
 export class PostgresSubscriberRepository implements SubscriberRepository {
-  async create(newsletter: SubscriberModel) {
+  public async create(newsletter: SubscriberModel) {
     await SubscriberModel.create({
       email: newsletter.email,
       newsletter_id: newsletter.newsletter_id,
     });
   }
 
-  async remove(id: number) {
+  public async remove(id: number) {
     await SubscriberModel.destroy({
       where: {
         id,
@@ -18,7 +18,7 @@ export class PostgresSubscriberRepository implements SubscriberRepository {
     });
   }
 
-  async getAllBySubscriberId(id: number) {
+  public async getAllBySubscriberId(id: number) {
     const newsletter = await SubscriberModel.findAll({
       raw: true,
       where: {

@@ -1,5 +1,13 @@
 import { MailDataRequired } from '@sendgrid/mail';
 
+export type TSendEmailParams = {
+  url: string;
+  to: string;
+  from: string;
+  subject: string;
+  html: string;
+};
+
 export interface EmailRepository {
-  sendEmail(url: string, to: string,from: string,subject: string,html: string): Promise<void>;
+  sendEmail(params: TSendEmailParams): Promise<void>;
 }

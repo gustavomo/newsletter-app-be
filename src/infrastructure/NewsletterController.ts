@@ -7,8 +7,9 @@ import { PostgresSubscriberRepository } from './PostgresSubscriberRepository';
 import S3FileRepository from './S3FileRepository';
 import SendGridEmailRepository from './SengridEmailRepository';
 
-class NewsletterController {
+import config from '../shared/config';
 
+class NewsletterController {
   public async getAll(_: Request, res: Response): Promise<void> {
     try {
       const NewsletterInstance = new Newsletter(new PostgresNewsletterRepository());
@@ -30,7 +31,7 @@ class NewsletterController {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
-  
+
   public async create(req: Request, res: Response): Promise<void> {
     try {
       const NewsletterInstance = new Newsletter(new PostgresNewsletterRepository());
@@ -70,14 +71,10 @@ class NewsletterController {
         res.status(400).json({ error: 'No file provided' });
         return;
       }
-  
-      const file = req.file;
-      const bucketName = process.env.BUCKET_NAME!;
-      const key = `${file.originalname}`;
-  
+
       const s3FileRepository = new S3FileRepository();
-      const s3Url = await s3FileRepository.uploadFile(file, bucketName, key);
-  
+      const s3Url = await s3FileRepository.uploadFile(req.file, req.file.originalname);
+
       res.json({ url: s3Url });
     } catch (error) {
       console.error(error);
@@ -88,8 +85,7 @@ class NewsletterController {
   public async submit(req: Request, res: Response): Promise<void> {
     try {
       const newsletter = new Newsletter(new PostgresNewsletterRepository(), new PostgresSubscriberRepository(), new SendGridEmailRepository());
-      await newsletter.submit(parseInt(req.params.id), process.env.FROM_EMAIL!);
-
+      await newsletter.submit(parseInt(req.params.id), config.FROM_EMAIL);
       res.json({ message: 'OK' });
     } catch (error) {
       console.error(error);
