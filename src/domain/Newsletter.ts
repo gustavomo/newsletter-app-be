@@ -96,6 +96,16 @@ class Newsletter {
     }
   }
 
+  public async getAllSubscribers(id: number) {
+    try {
+      const users = await this.subscriberRepository.getAllBySubscriberId(id);
+      return users;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
   private addUnlink(content: string, id: number) {
     return `${content} <br/> <br/> <a href="http://localhost:3001/unsubscribe/${id}">Unsubscribe</a>`;
   }

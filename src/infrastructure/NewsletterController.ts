@@ -92,6 +92,17 @@ class NewsletterController {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
+
+  public async getAllSubscribers(req: Request, res: Response): Promise<void> {
+    try {
+      const NewsletterInstance = new Newsletter(new PostgresNewsletterRepository(), new PostgresSubscriberRepository());
+      const subscribers = await NewsletterInstance.getAllSubscribers(parseInt(req.params.newsletterId));
+      res.json(subscribers);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
 }
 
 export default new NewsletterController();
