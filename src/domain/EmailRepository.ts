@@ -1,11 +1,11 @@
 import { MailDataRequired } from '@sendgrid/mail';
 
 export type TSendEmailParams = {
-  url: string;
-  to: string;
   from: string;
-  subject: string;
   html: string;
+  subject: string;
+  to: string;
+  url: string;
 };
 
 export interface EmailRepository {
