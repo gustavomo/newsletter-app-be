@@ -1,9 +1,10 @@
+import Subscriber from '../domain/Subscriber';
 import { SubscriberRepository } from '../domain/SubscriberRepository';
 
 import SubscriberModel from './models/Subscriber';
 
-export class PostgresSubscriberRepository implements SubscriberRepository {
-  public async create(newsletter: SubscriberModel) {
+export class PostgresSubscriberRepository implements SubscriberRepository<Subscriber> {
+  public async create(newsletter: Subscriber) {
     try {
       await SubscriberModel.create({
         email: newsletter.email,
@@ -35,7 +36,7 @@ export class PostgresSubscriberRepository implements SubscriberRepository {
         },
       });
 
-      return newsletter!;
+      return newsletter! as any;
     } catch (error) {
       throw error;
     }

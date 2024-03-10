@@ -1,19 +1,25 @@
 import { Request, Response } from 'express';
 
-import Newsletter from '../domain/Newsletter';
-
 import { PostgresNewsletterRepository } from './PostgresNewsletterRepository';
 import { PostgresSubscriberRepository } from './PostgresSubscriberRepository';
 import S3FileRepository from './S3FileRepository';
 import SendGridEmailRepository from './SengridEmailRepository';
+
+import GetAllNewsletters from '../application/GetAllNewsletters';
+import GetOneNewsletter from '../application/GetOneNewsletter';
+import CreateNewsletter from '../application/CreateNewsletter';
+import CreateSubscriber from '../application/CreateSubscriber';
+import RemoveSubscriber from '../application/RemoveSubscriber';
+import GetAllSubscribers from '../application/GetAllSubscribers';
+import SubmitNewsletter from '../application/SubmitNewsletter';
 
 import config from '../shared/config';
 
 class NewsletterController {
   public async getAll(_: Request, res: Response): Promise<void> {
     try {
-      const NewsletterInstance = new Newsletter(new PostgresNewsletterRepository());
-      const newsletters = await NewsletterInstance.getAll();
+      const getAllNewsletters = new GetAllNewsletters(new PostgresNewsletterRepository());
+      const newsletters = await getAllNewsletters.run();
       res.json(newsletters);
     } catch (error) {
       console.error(error);
@@ -23,8 +29,8 @@ class NewsletterController {
 
   public async getOne(req: Request, res: Response): Promise<void> {
     try {
-      const NewsletterInstance = new Newsletter(new PostgresNewsletterRepository());
-      const newsletter = await NewsletterInstance.getOne(parseInt(req.params.id));
+      const getOneNewsletter = new GetOneNewsletter(new PostgresNewsletterRepository());
+      const newsletter = await getOneNewsletter.run(parseInt(req.params.id));
       res.json(newsletter);
     } catch (error) {
       console.error(error);
@@ -34,8 +40,8 @@ class NewsletterController {
 
   public async create(req: Request, res: Response): Promise<void> {
     try {
-      const NewsletterInstance = new Newsletter(new PostgresNewsletterRepository());
-      await NewsletterInstance.create(req.body.subject, req.body.content, req.body.file_url);
+      const createNewsletter = new CreateNewsletter(new PostgresNewsletterRepository());
+      await createNewsletter.run(req.body.subject, req.body.content, req.body.file_url);
       res.json({ message: 'OK' });
     } catch (error) {
       console.error(error);
@@ -45,8 +51,8 @@ class NewsletterController {
 
   public async subscribeEmail(req: Request, res: Response): Promise<void> {
     try {
-      const NewsletterInstance = new Newsletter(new PostgresNewsletterRepository(), new PostgresSubscriberRepository());
-      await NewsletterInstance.subscribeEmail(parseInt(req.params.id), req.body.email);
+      const createSubscriber = new CreateSubscriber(new PostgresSubscriberRepository());
+      await createSubscriber.run(req.body.email, parseInt(req.params.id));
       res.json({ message: 'OK' });
     } catch (error) {
       console.error(error);
@@ -56,8 +62,8 @@ class NewsletterController {
 
   public async unsubscribeEmail(req: Request, res: Response): Promise<void> {
     try {
-      const NewsletterInstance = new Newsletter(new PostgresNewsletterRepository(), new PostgresSubscriberRepository());
-      await NewsletterInstance.unsubscribeEmail(parseInt(req.params.subscriberId));
+      const removeSubscriber = new RemoveSubscriber(new PostgresSubscriberRepository());
+      await removeSubscriber.run(parseInt(req.params.subscriberId));
       res.json({ message: 'OK' });
     } catch (error) {
       console.error(error);
@@ -84,8 +90,8 @@ class NewsletterController {
 
   public async submit(req: Request, res: Response): Promise<void> {
     try {
-      const newsletter = new Newsletter(new PostgresNewsletterRepository(), new PostgresSubscriberRepository(), new SendGridEmailRepository());
-      await newsletter.submit(parseInt(req.params.id), config.FROM_EMAIL);
+      const submitNewsletter = new SubmitNewsletter(new PostgresNewsletterRepository(), new PostgresSubscriberRepository(), new SendGridEmailRepository());
+      await submitNewsletter.run(parseInt(req.params.id), config.FROM_EMAIL);
       res.json({ message: 'OK' });
     } catch (error) {
       console.error(error);
@@ -95,8 +101,8 @@ class NewsletterController {
 
   public async getAllSubscribers(req: Request, res: Response): Promise<void> {
     try {
-      const NewsletterInstance = new Newsletter(new PostgresNewsletterRepository(), new PostgresSubscriberRepository());
-      const subscribers = await NewsletterInstance.getAllSubscribers(parseInt(req.params.newsletterId));
+      const getAllSubscribers = new GetAllSubscribers(new PostgresSubscriberRepository());
+      const subscribers = await getAllSubscribers.run(parseInt(req.params.newsletterId));
       res.json(subscribers);
     } catch (error) {
       console.error(error);

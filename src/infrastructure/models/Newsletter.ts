@@ -1,39 +1,26 @@
 
-import { Model, DataTypes } from 'sequelize';
+import { DataTypes } from 'sequelize';
 
 import sequelize from './index';
 
-class NewsletterModel extends Model {
-  public id!: number;
-  public subject!: string;
-  public content!: string;
-  public file_url!: string;
-}
-
-NewsletterModel.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    subject: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    content: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    file_url: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+const NewsletterModel = sequelize.define('newsletters', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
   },
-  {
-    sequelize,
-    modelName: 'newsletters',
-  }
-);
+  subject: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  content: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  file_url: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+});
 
 export default NewsletterModel;

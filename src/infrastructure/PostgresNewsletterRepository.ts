@@ -1,9 +1,10 @@
+import Newsletter from '../domain/Newsletter';
 import { NewsletterRepository } from '../domain/NewsletterRespository';
 
 import NewsletterModel from './models/Newsletter';
 
-export class PostgresNewsletterRepository implements NewsletterRepository {
-  public async create(newsletter: NewsletterModel) {
+export class PostgresNewsletterRepository implements NewsletterRepository<Newsletter> {
+  public async create(newsletter: Newsletter) {
     try {
       await NewsletterModel.create({
         subject: newsletter.subject,
@@ -21,7 +22,7 @@ export class PostgresNewsletterRepository implements NewsletterRepository {
         raw: true,
       });
 
-      return newsletter!;
+      return newsletter! as any;
     } catch (error) {
       throw error;
     }
@@ -36,7 +37,7 @@ export class PostgresNewsletterRepository implements NewsletterRepository {
         },
       });
 
-      return newsletter!;
+      return newsletter! as any;
     } catch (error) {
       throw error;
     }

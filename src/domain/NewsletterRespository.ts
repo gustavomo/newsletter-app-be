@@ -1,7 +1,5 @@
-import NewsLetter from '../infrastructure/models/Newsletter';
-
-export interface NewsletterRepository {
-  getAll(): Promise<NewsLetter[]>;
-  getOne(id: number): Promise<NewsLetter>;
-  create(newsletter: NewsLetter): Promise<void>;
+export interface NewsletterRepository<T> {
+  getAll(): Promise<T[]>;
+  getOne(id: number): Promise<T>;
+  create(newsletter: T): Promise<void>;
 }
