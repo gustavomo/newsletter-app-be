@@ -1,19 +1,37 @@
-import NewsletterModel from '../infrastructure/models/Newsletter';
-import SubscriberModel from '../infrastructure/models/Subscriber';
-
 import { EmailRepository } from './EmailRepository';
 import { NewsletterRepository } from './NewsletterRespository';
+import Subscriber from './Subscriber';
 import { SubscriberRepository } from './SubscriberRepository';
 
 class Newsletter {
   private newsletterRepository: NewsletterRepository;
   private subscriberRepository: SubscriberRepository;
   private emailRepository: EmailRepository;
+  public id!: number;
+  public subject!: string;
+  public content!: string;
+  public file_url!: string;
 
-  constructor(newsletterRepository: NewsletterRepository, subscriberRepository?: SubscriberRepository, emailRepository?: EmailRepository) {
-    this.newsletterRepository = newsletterRepository;
+  constructor(newsletterRepository?: NewsletterRepository, subscriberRepository?: SubscriberRepository, emailRepository?: EmailRepository) {
+    this.newsletterRepository = newsletterRepository!;
     this.subscriberRepository = subscriberRepository!;
     this.emailRepository = emailRepository!;
+  }
+
+  private createNewsletter(subject: string, content: string, fileUrl: string): Newsletter {
+    const newNewsletter = new Newsletter();
+
+    this.subject = subject;
+    this.content = content;
+    this.file_url = fileUrl;
+
+    return newNewsletter;
+  }
+
+  private createSubscriber(email: string, newsletterId: number): Subscriber {
+    const newSubscriber = new Subscriber(email, newsletterId);
+
+    return newSubscriber;
   }
 
   public async getAll() {
@@ -36,11 +54,7 @@ class Newsletter {
 
   public async create(subject: string, content: string, fileUrl: string) {
     try {
-      const newNewsletter = new NewsletterModel({
-        subject: subject,
-        content: content,
-        file_url: fileUrl,
-      });
+      const newNewsletter = this.createNewsletter(subject, content, fileUrl);
 
       await this.newsletterRepository.create(newNewsletter);
     } catch (error) {
@@ -50,10 +64,7 @@ class Newsletter {
 
   public async subscribeEmail(newsletterId: number, email: string) {
     try {
-      const newSubcriber = new SubscriberModel({
-        email: email,
-        newsletter_id: newsletterId,
-      });
+      const newSubcriber = this.createSubscriber(email, newsletterId);
 
       await this.subscriberRepository.create(newSubcriber);
     } catch (error) {

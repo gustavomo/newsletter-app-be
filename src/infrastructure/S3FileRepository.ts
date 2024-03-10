@@ -23,9 +23,9 @@ class S3FileRepository implements FileRepository {
         Body: file.buffer,
         ContentType: file.mimetype,
       };
-  
+
       const result = await this.s3.upload(params).promise();
-  
+
       return result.Location;
     }
     catch (error) {

@@ -1,7 +1,7 @@
-import SubscriberModel from '../infrastructure/models/Subscriber';
+import Subscriber from './Subscriber';
 
 export interface SubscriberRepository {
-  create(newsletter: SubscriberModel): Promise<void>;
-  getAllBySubscriberId(id: number): Promise<SubscriberModel[]>;
+  create(newsletter: Subscriber): Promise<void>;
+  getAllBySubscriberId(id: number): Promise<Subscriber[]>;
   remove(id: number): Promise<void>;
 }

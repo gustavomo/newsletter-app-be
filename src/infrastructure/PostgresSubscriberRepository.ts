@@ -1,9 +1,10 @@
+import Subscriber from '../domain/Subscriber';
 import { SubscriberRepository } from '../domain/SubscriberRepository';
 
 import SubscriberModel from './models/Subscriber';
 
 export class PostgresSubscriberRepository implements SubscriberRepository {
-  public async create(newsletter: SubscriberModel) {
+  public async create(newsletter: Subscriber) {
     try {
       await SubscriberModel.create({
         email: newsletter.email,
@@ -28,14 +29,14 @@ export class PostgresSubscriberRepository implements SubscriberRepository {
 
   public async getAllBySubscriberId(id: number) {
     try {
-      const newsletter = await SubscriberModel.findAll({
+      const subscribers = await SubscriberModel.findAll({
         raw: true,
         where: {
           newsletter_id: id,
         },
       });
 
-      return newsletter!;
+      return subscribers!;
     } catch (error) {
       throw error;
     }
