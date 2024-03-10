@@ -21,7 +21,6 @@ class Newsletter {
       const users = await this.newsletterRepository.getAll();
       return users;
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
@@ -31,7 +30,6 @@ class Newsletter {
       const users = await this.newsletterRepository.getOne(id);
       return users;
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
@@ -46,7 +44,6 @@ class Newsletter {
 
       await this.newsletterRepository.create(newNewsletter);
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
@@ -60,7 +57,6 @@ class Newsletter {
 
       await this.subscriberRepository.create(newSubcriber);
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
@@ -69,7 +65,6 @@ class Newsletter {
     try {
       await this.subscriberRepository.remove(subscriberId);
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
@@ -91,7 +86,6 @@ class Newsletter {
         });
       }
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
@@ -101,7 +95,6 @@ class Newsletter {
       const users = await this.subscriberRepository.getAllBySubscriberId(id);
       return users;
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }

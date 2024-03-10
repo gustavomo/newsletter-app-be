@@ -16,16 +16,21 @@ class S3FileRepository implements FileRepository {
   }
 
   public async uploadFile(file: Express.Multer.File, key: string): Promise<string> {
-    const params: S3.Types.PutObjectRequest = {
-      Bucket: config.BUCKET_NAME,
-      Key: key,
-      Body: file.buffer,
-      ContentType: file.mimetype,
-    };
-
-    const result = await this.s3.upload(params).promise();
-
-    return result.Location;
+    try {
+      const params: S3.Types.PutObjectRequest = {
+        Bucket: config.BUCKET_NAME,
+        Key: key,
+        Body: file.buffer,
+        ContentType: file.mimetype,
+      };
+  
+      const result = await this.s3.upload(params).promise();
+  
+      return result.Location;
+    }
+    catch (error) {
+      throw error;
+    }
   }
 }
 

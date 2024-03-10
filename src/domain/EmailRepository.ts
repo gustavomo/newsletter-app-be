@@ -1,5 +1,3 @@
-import { MailDataRequired } from '@sendgrid/mail';
-
 export type TSendEmailParams = {
   from: string;
   html: string;

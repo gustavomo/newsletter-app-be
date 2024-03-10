@@ -1,32 +1,44 @@
-import { NewsletterRepository } from "../domain/NewsletterRespository";
+import { NewsletterRepository } from '../domain/NewsletterRespository';
 
-import NewsletterModel from "./models/Newsletter";
+import NewsletterModel from './models/Newsletter';
 
 export class PostgresNewsletterRepository implements NewsletterRepository {
   public async create(newsletter: NewsletterModel) {
-    await NewsletterModel.create({
-      subject: newsletter.subject,
-      content: newsletter.content,
-      file_url: newsletter.file_url,
-    });
+    try {
+      await NewsletterModel.create({
+        subject: newsletter.subject,
+        content: newsletter.content,
+        file_url: newsletter.file_url,
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 
   public async getAll() {
-    const newsletter = await NewsletterModel.findAll({
-      raw: true,
-    });
+    try {
+      const newsletter = await NewsletterModel.findAll({
+        raw: true,
+      });
 
-    return newsletter!;
+      return newsletter!;
+    } catch (error) {
+      throw error;
+    }
   }
 
   public async getOne(id: number) {
-    const newsletter = await NewsletterModel.findOne({
-      raw: true,
-      where: {
-        id,
-      },
-    });
+    try {
+      const newsletter = await NewsletterModel.findOne({
+        raw: true,
+        where: {
+          id,
+        },
+      });
 
-    return newsletter!;
+      return newsletter!;
+    } catch (error) {
+      throw error;
+    }
   }
 }

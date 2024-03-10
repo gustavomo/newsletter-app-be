@@ -11,7 +11,7 @@ class SendGridEmailRepository implements EmailRepository {
     try {
       await axios.post(config.EMAIL_URL, params);
     } catch (error) {
-      console.error('Error sending email:', error);
+      throw error;
     }
   }
 }

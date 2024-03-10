@@ -1,31 +1,43 @@
-import { SubscriberRepository } from "../domain/SubscriberRepository";
+import { SubscriberRepository } from '../domain/SubscriberRepository';
 
-import SubscriberModel from "./models/Subscriber";
+import SubscriberModel from './models/Subscriber';
 
 export class PostgresSubscriberRepository implements SubscriberRepository {
   public async create(newsletter: SubscriberModel) {
-    await SubscriberModel.create({
-      email: newsletter.email,
-      newsletter_id: newsletter.newsletter_id,
-    });
+    try {
+      await SubscriberModel.create({
+        email: newsletter.email,
+        newsletter_id: newsletter.newsletter_id,
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 
   public async remove(id: number) {
-    await SubscriberModel.destroy({
-      where: {
-        id,
-      },
-    });
+    try {
+      await SubscriberModel.destroy({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 
   public async getAllBySubscriberId(id: number) {
-    const newsletter = await SubscriberModel.findAll({
-      raw: true,
-      where: {
-        newsletter_id: id,
-      },
-    });
+    try {
+      const newsletter = await SubscriberModel.findAll({
+        raw: true,
+        where: {
+          newsletter_id: id,
+        },
+      });
 
-    return newsletter!;
+      return newsletter!;
+    } catch (error) {
+      throw error;
+    }
   }
 }

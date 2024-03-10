@@ -1,4 +1,4 @@
-import NewsLetter from "../infrastructure/models/Newsletter";
+import NewsLetter from '../infrastructure/models/Newsletter';
 
 export interface NewsletterRepository {
   getAll(): Promise<NewsLetter[]>;
